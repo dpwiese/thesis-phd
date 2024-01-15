@@ -1,0 +1,488 @@
+\chapter{Hypersonic Vehicle Numerical Simulation Data}\label{app.numericalSimulationData}
+
+This appendix contains the numerical data for each of the three plant subsystems and the corresponding controllers that were designed for the Generic Hypersonic Vehicle in Ch.~\ref{ch.applicationHypersonic}.
+
+\section{Velocity Subsystem}
+
+The velocity subsystem is of the form\ \eqref{eqn.xdotpunc}.
+It is a scalar system, and thus uses state feedback, and contains no outer-loop dynamics.
+
+\subsection{Plant Data}
+
+The open-loop plant parameters in\ \eqref{eqn.xdotpunc} are given by the following
+\begin{equation*}
+  A_{p} = -0.0058
+  \qquad
+  B_{p} = 16.7465
+  \qquad
+  C_{p} = 1
+  \qquad
+  C_{pz} = 1
+  \qquad
+  D_{pz} = 0
+\end{equation*}
+
+\subsection{Controller Data}
+
+The following weighting matrices were used to compute $K_{x}$ as in Eq.\ \eqref{eqn.ubl} using the \textsc{Matlab} command \texttt{lqr}
+\begin{equation*}
+  \begin{aligned}
+    Q_{\text{lqr}} &=
+    \text{diag}\bigr(
+    \begin{bmatrix}
+      10 & 1
+    \end{bmatrix}
+    \bigr) \\
+    R_{\text{lqr}} &= 10
+  \end{aligned}
+\end{equation*}
+The following baseline control gain $K_{x}$ in Eq.\ \eqref{eqn.ubl} was computed
+\begin{equation*}
+  K_{x} =
+  \begin{bmatrix}
+    -1.0184 & 0.3162
+  \end{bmatrix}^{\top}
+\end{equation*}
+
+\section{Longitudinal Subsystem}\label{sec.appendix_long}
+
+\subsection{Plant Data}
+The nominal plant matrices in the form of\ \eqref{eqn.FullLinearSystem} are given by
+\begin{equation*}
+  \begin{gathered}
+    A_{w}=
+    \begin{bmatrix}
+      -0.2398 & 1 & 0 & 0 \\
+      4.5689 & -0.1189 & 0 & 0 \\
+      0 & 1 & 0 & 0 \\
+      -5866 & 0 & 5866 & 0
+    \end{bmatrix}
+    \qquad
+    B_{w}=
+    \begin{bmatrix}
+      -0.0001 \\
+      -0.1856 \\
+      0 \\
+      0
+    \end{bmatrix}
+    \qquad
+    C_{w} =
+    \begin{bmatrix}
+      0 \\
+      1 \\
+      0 \\
+      0
+    \end{bmatrix}^{\top}
+  \end{gathered}
+\end{equation*}
+When partitioned, the inner-loop plant matrices are given by
+\begin{equation*}
+  \begin{gathered}
+    A_{p}=
+    \begin{bmatrix}
+      -0.2398 & 1.0000 \\
+      4.5689 & -0.1189
+    \end{bmatrix}
+    \qquad
+    B_{p}=
+    \begin{bmatrix}
+      -0.0001 \\
+      -0.1856
+    \end{bmatrix}
+    \qquad
+    C_{p}=
+    \begin{bmatrix}
+      0 \\
+      1
+    \end{bmatrix}^{\top}
+    \qquad
+    C_{pz}=
+    \begin{bmatrix}
+      0 \\
+      1
+    \end{bmatrix}^{\top}
+  \end{gathered}
+\end{equation*}
+with $D_{pz}=0$.
+The outer-loop plant matrices are given by
+\begin{equation*}
+  \begin{gathered}
+    A_{g} =
+    \begin{bmatrix}
+      0 & 0 \\
+      5866 & 0 \\
+    \end{bmatrix}
+    \qquad
+    B_{g} =
+    \begin{bmatrix}
+      0 & 1 \\
+      -5866 & 0 \\
+    \end{bmatrix}
+    \qquad
+    C_{g}=
+    \begin{bmatrix}
+      0 \\
+      1
+    \end{bmatrix}^{\top}
+    \qquad
+    C_{gz}=
+    \begin{bmatrix}
+      0 \\
+      1
+    \end{bmatrix}^{\top}
+  \end{gathered}
+\end{equation*}
+
+\subsection{Controller Data}
+
+\subsubsection{Inner-loop controller}
+
+The following weighting matrices were used to compute $K_{x}$ as in Eq.\ \eqref{eqn.ubl} using the \textsc{Matlab} command \texttt{lqr}
+\begin{equation*}
+  \begin{aligned}
+    Q_{\text{lqr}}&=\text{diag}\bigr(
+    \begin{bmatrix}
+      0 & 10 & 170
+    \end{bmatrix}
+    \bigr) \\
+    R_{\text{lqr}}&=0.001
+  \end{aligned}
+\end{equation*}
+The following baseline control gain $K_{x}$ in Eq.\ \eqref{eqn.ubl} was computed
+\begin{equation*}
+  K_{x} =
+  \begin{bmatrix}
+    -3.3559 & 118.5 & -412.31
+  \end{bmatrix}
+\end{equation*}
+resulting in the following state feedback gain and phase margin
+\begin{equation*}
+  \begin{aligned}
+    \text{GM}_{\text{sf}} &=
+    \begin{bmatrix}
+      -21.3 & 154.2
+    \end{bmatrix}
+    \quad \text{dB}\\
+    \text{PM}_{\text{sf}} &=
+    60
+    \quad \text{deg}
+  \end{aligned}
+\end{equation*}
+The controller was then tuned by selecting $X_{11}$, $X_{12}$, and $X_{22}$ as described in inner-loop steps~\ref{step.X22} and~\ref{step.X11} resulting in $X$ given by
+\begin{equation*}
+  X=
+  \begin{bmatrix}
+    1 & 1 \\
+    1 & 318660 \\
+  \end{bmatrix}
+\end{equation*}
+Resulting in $S_{1}$ and $L$
+\begin{equation*}
+  S_{1} =
+  \begin{bmatrix}
+    -5.0525 & 0
+  \end{bmatrix}
+  \qquad
+  L =
+  \begin{bmatrix}
+    -2.6749 & 0.1586 \\
+    -1979.2 & 0.0396 \\
+    -0.0118 & -50527
+  \end{bmatrix}
+\end{equation*}
+This provided the following gain and phase margin for the resulting output feedback compensator
+\begin{equation*}
+  \begin{aligned}
+    \text{GM}_{\text{of}}
+    &=
+    \begin{bmatrix}
+      -21.2 & 39.8
+    \end{bmatrix}
+    \quad \text{dB}\\
+    \text{PM}_{\text{of}} &=
+    59
+    \quad \text{deg}
+  \end{aligned}
+\end{equation*}
+
+\subsubsection{Outer-loop controller}
+
+The forward-loop reference model was designed using integral action on the regulated output as in\ \eqref{eqn.rKbar} using the following weighting matrices
+\begin{equation*}
+  \begin{split}
+    Q_{\text{lqr}}
+    &=
+    \text{diag}\bigr(
+    \begin{bmatrix}
+      1 & 1 & 1 & 1 & 1 & 1000
+    \end{bmatrix}
+    \bigr) \\
+    R_{\text{lqr}}
+    &=
+    1000000
+  \end{split}
+\end{equation*}
+Using the outer-loop design procedure summarized in Section~\ref{sec.outerLoopDesignProcedureSummary}, $P_{g}$ was calculated as in\ \eqref{eqn.Pg} using $P$ calculated as in\ \eqref{eqn.P} and $X_{D}$, where $P_{\Lambda}$ in\ \eqref{eqn.P}, and $X_{D}$ was selected as
+\begin{equation*}
+  X_{D}
+  =
+  \begin{bmatrix}
+    1 & 3.6957e-13 \\
+    3.6957e-13 & 10
+  \end{bmatrix}
+  \qquad
+  P_{\Lambda}
+  =
+  \begin{bmatrix}
+    0.01 & 0 \\
+    0 & 1
+  \end{bmatrix}
+\end{equation*}
+With the resulting $P_{g}$, $S_{g}=2.0319$ was determined using\ \eqref{eqn.SgCaseI}, and $L_{g}$ obtained numerically satisfying\ \eqref{eqn.condition4a}.
+Finally $L_{y}$ was computed using\ \eqref{eqn.Ly} thus completing the outer-loop control design.
+\begin{equation*}
+  \begin{gathered}
+    P_{g} =
+    \begin{bmatrix}
+      10 & 5.1073e-15 \\
+      5.1073e-15 & 0.00041288
+    \end{bmatrix}
+    \qquad
+    L_{g} =
+    \begin{bmatrix}
+      -0.20218 \\
+      -82.576
+    \end{bmatrix}
+    \qquad
+    L_{y} =
+    \begin{bmatrix}
+      -1 & 2.5135e-12 \\
+      4.0446 & -4921.4
+    \end{bmatrix}
+  \end{gathered}
+\end{equation*}
+
+\section{Lateral Subsystem}\label{sec.appendix_latr}
+
+\subsection{Plant Data}
+
+The nominal plant matrices in the form of\ \eqref{eqn.FullLinearSystem} are given by
+\begin{equation*}
+  \begin{split}
+    A_{w} &=
+    \begin{bmatrix}
+      -0.0697 & -0.0104 & -1.0000 & 0.0053512 & 1e-12 \\
+      -1336.7 & -2.026 & -0.0075 & 0 & 0 \\
+      2.0689 & -0.0015 & -0.0531 & 0 & 0 \\
+      -0.0002 & 0.8535 & -0.0088 & -3.0021e-06 & 6.2245e-05 \\
+      2.8915e-06 & 0 & 1.0001 & 2.9365e-08 & -8.6563e-07 \\
+    \end{bmatrix} \\
+    \qquad
+    B_{w} &=
+    \begin{bmatrix}
+      0 & 0.0002 \\
+      -8.0424 & 10.325 \\
+      0.0317 & -0.2848 \\
+      0 & 0 \\
+      0 & 0 \\
+    \end{bmatrix}
+    \qquad
+    C_{w} =
+    \begin{bmatrix}
+      0 & 1 & 0 & 0 & 0 \\
+      0 & 0 & 1 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 1 \\
+    \end{bmatrix} \\
+  \end{split}
+\end{equation*}
+When partitioned, the inner-loop plant matrices are given by
+\begin{equation*}
+  \begin{gathered}
+    A_{p}=
+    \begin{bmatrix}
+      -0.0697 & -0.0104 & -1.0000 \\
+      -1336.7 & -2.026 & -0.0075 \\
+      2.0689 & -0.0015 & -0.0531 \\
+    \end{bmatrix}
+    \hspace{0.5in}
+    B_{p}=
+    \begin{bmatrix}
+      0 & 0.0002 \\
+      -8.0424 & 10.325 \\
+      0.0317 & -0.2848 \\
+    \end{bmatrix} \\
+    C_{p}=
+    \begin{bmatrix}
+      0 & 1 & 0 \\
+      0 & 0 & 1 \\
+    \end{bmatrix}
+    \qquad
+    C_{pz}=
+    \begin{bmatrix}
+      0 & 0 & 1
+    \end{bmatrix}
+    \qquad
+    D_{pz} =
+    \begin{bmatrix}
+      0 & 0
+    \end{bmatrix}
+  \end{gathered}
+\end{equation*}
+The outer-loop plant matrices are given by
+\begin{equation*}
+  \begin{gathered}
+    A_{g} =
+    \begin{bmatrix}
+      -3.0021e-06 & 6.2245e-05 \\
+      2.9365e-08 & -8.6563e-07 \\
+    \end{bmatrix}
+    \qquad
+    B_{g} =
+    \begin{bmatrix}
+      -0.0002 & 0.8535 & -0.0088 \\
+      2.8915e-06 & 0 & 1.0001 \\
+    \end{bmatrix} \\
+    C_{g} =
+    \begin{bmatrix}
+      0 & 1
+    \end{bmatrix}
+    \qquad
+    C_{gz} =
+    \begin{bmatrix}
+      0 & 1
+    \end{bmatrix}
+  \end{gathered}
+\end{equation*}
+
+\subsection{Controller Data}
+
+\subsubsection{Inner-loop controller}
+
+The following weighting matrices were used to compute $K_{x}$ as in Eq.\ \eqref{eqn.ubl} using the \textsc{Matlab} command \texttt{lqr()}
+\begin{equation*}
+  \begin{aligned}
+    Q_{\text{lqr}} &=
+    \text{diag}\bigr(
+    \begin{bmatrix}
+      1000 & 0 & 0 & 1000
+    \end{bmatrix}
+    \bigr) \\
+    R_{\text{lqr}}
+    &=
+    \text{diag}\bigr(
+    \begin{bmatrix}
+      0.01 & 0.01
+    \end{bmatrix}
+    \bigr)
+  \end{aligned}
+\end{equation*}
+The baseline control gain $K_{x}$ in Eq.\ \eqref{eqn.ubl} was computed
+\begin{equation*}
+  K_{x} =
+  \begin{bmatrix}
+    -281.19 & 7.2309 & 50.495 & -265.57 \\
+    -288.63 & -3.4406 & 75.18 & 171.68
+  \end{bmatrix}^{\top}
+ \end{equation*}
+which resulting in the following state feedback gain and phase margin
+\begin{align*}
+  \text{GM}_{\text{sf}} &=
+  \begin{bmatrix}
+    -11.2 & 276.4
+  \end{bmatrix}
+  \quad \text{dB} \\
+  \text{PM}_{\text{sf}} &=
+  60
+  \quad \text{deg}
+\end{align*}
+The controller was then tuned by selecting $X_{11}$, $X_{12}$, and $X_{22}$ as described in inner-loop steps~\ref{step.X22} and~\ref{step.X11} resulting in $X$ given by
+\begin{equation*}
+  X=
+  \begin{bmatrix}
+    1 & 1 \\
+    1 & 2.5426e+05
+  \end{bmatrix}
+\end{equation*}
+The resulting $S_{1}$ and $L$ were calculated
+\begin{equation*}
+  S_{1} =
+  \begin{bmatrix}
+    -0.1638 & -5.8866 & 0 \\
+    -0.0581 & -8.6832 & 0
+  \end{bmatrix}
+  \qquad
+  L =
+  \begin{bmatrix}
+    -0.1196 & 1.0446 & -0.0179 \\
+    -10556 & 140.29 & 0.0098 \\
+    140.33 & -43.212 & 0 \\
+    0.9996 & -0.0124 & -4552.4 \\
+  \end{bmatrix}
+\end{equation*}
+This provided the following gain and phase margin for the resulting output feedback compensator
+\begin{align*}
+  \text{GM}_{\text{of}} &=
+  \begin{bmatrix}
+    -10.0 & 16.4
+  \end{bmatrix}
+  \quad \text{dB}\\
+  \text{PM}_{\text{of}} &=
+  50.3
+  \quad \text{deg}
+\end{align*}
+
+\subsubsection{Outer-loop controller}
+
+The forward-loop reference model was designed using integral action on the regulated output as in\ \eqref{eqn.rKbar} using the following weighting matrices
+\begin{equation*}
+  \begin{split}
+    Q_{\text{lqr}}
+    &=
+    \text{diag}\bigr(
+    \begin{bmatrix}
+      20 & 1 & 0 & 0 & 0 & 0 & 1000
+    \end{bmatrix}
+    \bigr) \\
+    R_{\text{lqr}}
+    &=
+    0.1
+  \end{split}
+\end{equation*}
+Using the outer-loop design procedure summarized in Section~\ref{sec.outerLoopDesignProcedureSummary}, $P_{g}$ was calculated as in\ \eqref{eqn.Pg} using $P$ calculated as in\ \eqref{eqn.P} and $X_{D}$, where $P_{\Lambda}$ in\ \eqref{eqn.P}, and $X_{D}$ was selected as
+\begin{equation*}
+  X_{D}
+  =
+  \begin{bmatrix}
+    10.408 & -6.3861 \\
+    -6.3861 & 100
+  \end{bmatrix}
+  \qquad
+  P_{\Lambda}
+  =
+  \begin{bmatrix}
+    1000 & 0 \\
+    0 & 1
+  \end{bmatrix}
+\end{equation*}
+With the resulting $P_{g}$, $S_{g}=-15.474$ was determined using\ \eqref{eqn.SgCaseI}, and $L_{g}$ obtained numerically satisfying\ \eqref{eqn.condition4a}.
+Finally $L_{y}$ was computed using\ \eqref{eqn.Ly} thus completing the outer-loop control design.
+\begin{equation*}
+  \begin{gathered}
+    P_{g} =
+    \begin{bmatrix}
+      100 & -23051 \\
+      -23051 & 3.403e+07 \\
+    \end{bmatrix}
+    \qquad
+    L_{g} =
+    \begin{bmatrix}
+      -0.0004854 \\
+      -5.0844e-07
+    \end{bmatrix} \\
+    L_{y} =
+    \begin{bmatrix}
+      -0.85355 & -0.0021509 & 0.00012421 \\
+      -9.8889e-13 & -1 & 5.3885e-07
+    \end{bmatrix}
+  \end{gathered}
+\end{equation*}

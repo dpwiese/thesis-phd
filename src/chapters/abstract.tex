@@ -1,0 +1,17 @@
+This thesis presents a new, systematic method of synthesizing an output feedback adaptive controller for a class of uncertain, non-square multi-input/multi-output systems.
+The control design process consists of first designing an inner-loop controller for a reduced order plant model to enforce command tracking of selected inner-loop variables, with an adaptive element used to accommodate parametric uncertainties in the plant.
+Once this inner-loop control design is complete, an outer-loop is then designed which prescribes the inner-loop commands to enforce command tracking of selected outer-loop variables.
+
+The main challenge that needs to be addressed when designing the inner-loop controller is the determination of a corresponding square and strictly positive real transfer function.
+The first contribution of this thesis is the design of a new procedure to synthesize two gain matrices that allow the realization of such a transfer function, thereby allowing a globally stable adaptive output feedback law to be generated.
+The unique features of this output feedback adaptive controller are a baseline controller that uses a Luenberger observer, a closed-loop reference model, manipulations of a bilinear matrix inequality, and the Kalman-Yakubovich lemma.
+Using these features, a simple design procedure is proposed for the adaptive controller, and the corresponding stability property is established.
+
+The outer-loop controller is designed around the plant with existing adaptive inner-loop controller such that global stability of the closed-loop system is guaranteed.
+The design of the outer-loop uses components of a closed-loop reference model in a judicious manner which enables a modular approach, without any re-design of the inner-loop controller.
+In addition, this architecture facilitates the use of an additional state-limiter to enforce desired limits on the state variables.
+
+ A numerical example based on a scramjet powered, generic hypersonic vehicle model is presented, demonstrating the efficacy of the proposed control design.
+ The six-degree-of-freedom nonlinear vehicle model is linearized, giving the design model for which the controller is synthesized.
+ The adaptive output feedback controller is then applied to an evaluation model, which is nonlinear, coupled, and includes actuator dynamics, and it is shown to result in stable tracking in the presence of uncertainties that destabilize the baseline controller.
+ Benefits of various aspects of the sequential and modular control design as well as its adaptive components are clearly illustrated in this numerical example.

@@ -1,0 +1,29 @@
+\chapter{Conclusions and Future Work}\label{ch.conclusions}
+
+This thesis presented the design of an adaptive controller for a class of uncertain MIMO systems.
+Synthesis of the controller is completed using a sequential loop closure based procedure, where an adaptive inner-loop controller is designed first, followed by an outer-loop controller.
+
+The inner-loop controller is capable of accommodating the uncertainty present in the plant, only requires the plant output, and provides command tracking of an inner-loop regulated output.
+The controller is uses a baseline Luneberger observer based controller, which, when combined with the adaptive element provides the closed-loop reference model structure.
+This thesis provided a new way of synthesizing the gain matrices required for such a controller, providing a larger set of solutions and extra degrees of freedom to tune the controller for increased performance and robustness.
+
+The outer-loop controller generates appropriate inner-loop commands so that the outer-loop plant regulated output follows a desired command trajectory.
+The outer-loop controller incorporates a state-limiter, allowing the inner and outer-loop command signals to be modified as necessary to limit the evolution of the state trajectories to within a certain prescribed region within the state space.
+The outer-loop controller also uses components of a closed-loop reference model, and the resulting closed-loop system is shown to be globally stable.
+
+This sequential loop closure based procedure to synthesize an outer-loop controller simplifies the process of designing guidance and control laws from that of designing a single higher-order controller to several lower-order controllers.
+The proposed approach provides an outer-loop control design which does not require a re-design of the existing inner-loop, and guarantees global stability of the closed-loop system, and enforces desired state limits.
+
+Finally, this adaptive controller was applied to a highly nonlinear, unstable, six degree-of-freedom Generic Hypersonic Vehicle model, which includes unmodeled actuator dynamics.
+The performance of the GHV was evaluated by providing altitude and heading commands, when subject to uncertainty.
+The proposed adaptive controller was shown to provide stability when the baseline could not, accommodated the desired state limits, and provided command tracking.
+
+The control design presented in this thesis has provided a new control architecture, and a constructive procedure to synthesize the required gain matrices to provide stability and command tracking.
+This procedure used to synthesize the gain matrices has provided a large set of solutions, from which the control designer can select each of the desired matrices.
+This has, in practice, provided very good control designs with little effort.
+However, work remains to determine methods or rules by which to select from the set of possible controller solutions ones that are more desirable than others.
+This may help to ensure the control gains are minimized, to provide specific frequency domain properties for the underlying baseline controller, or minimize control effort, for example.
+
+In addition, the state limiter presented in Section~\ref{sec.outerLoop.stateLimiting} requires further analysis.
+While some qualitative analysis was done to understand how the state limiter can be used to improve the time response of a system by enforcing limits, work remains to quantify this benefit more precisely.
+In particular, the state limiter introduces many additional degrees of freedom that must be fully understood in order to more successfully design and implement  the limiter on future systems.

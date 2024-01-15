@@ -1,0 +1,309 @@
+\chapter{Introduction}\label{ch.Introduction}
+
+Automatic control has been used for thousands of years, dating back to the ancient Greeks and a regulator for the water level in a tank.
+However, it was not until the development of the modern steam engine in the 18$^{\text{th}}$ century that the development of control theory really began.
+With the steam engine came the necessity to regulate the engine's output to a desired set point.
+For many years a lot of focus was placed on developing new regulators for the steam engine, and developing the theory necessary to understand their operation.
+Development of control systems continued in the 19$^{\text{th}}$ century with applications in weapons and ship steering systems, and then electrical systems.
+The first airplane autopilot was invented by the Sperry Corporation in 1912.
+Since then, the control of physical systems become increasingly important, including applications in aircraft, spacecraft, cars, and many other sorts of vehicles.
+The control of such vehicles as since grown into the broad discipline that is now called guidance, navigation, and control, or GNC.\@
+
+In order to provide some context for the control architecture proposed in this thesis as compared to existing approaches, an overview of the accepted definitions for each of these terms is first provided: \textit{Guidance} refers to the process of determining a desired path for a vehicle to follow and generating the appropriate maneuvers for realizing these paths\ \cite{draper.apollo.1965}; \textit{navigation} is the process of determining a vehicle's location, attitude, and velocity; and \textit{control} is the interface between the guidance system and the vehicle, providing the necessary actuator inputs to stabilize and change the motion of the vehicle.
+There are many different systems onboard a modern aircraft, and these systems can be delineated based on whether they provide the function of guidance, navigation, or control.
+Stability derivative augmenter systems, or stability augmentation systems (SAS) refer to systems which alter an aircraft's stability derivatives by means of feedback control thus providing artificial stability for aircraft with undesirable flying characteristics, without the pilots perception\ \cite{abzug.stability.2005, mclean.flightcontrol.1990, nelson.flightcontrol.1998}.
+Also, control or command augmentation systems (CAS) allow a pilot or guidance system to specify desired values of certain aircraft motions, such as a desired vertical acceleration, angle-of-attack, or roll angle\ \cite{onken.cognitiveautomation.2010}.
+These types of systems typically fall under the category of inner-loop control, as they are typically represented in a block diagram as the inner loop, with an outer-loop providing the function of autopilots, pilot relief, guidance, and navigation\ \cite{yechout.flightmechanics.2003}.
+In making this distinction between guidance, navigation, and control systems, the usage of the term outer-loop controller is reserved to mean a guidance component which is capable of tracking of variables which more meaningfully describe the path of an aircraft, such as flight path angle, altitude, or heading angle.
+
+Dividing the development of  a control system into hierarchical structure with inner and outer-loop design tasks has many benefits, both in aerospace and other control applications.
+The first is that many control systems were designed when only an inner-loop was necessary, with a human operator providing the function of the outer-loop.
+Thus significant knowledge exists around how to design many the inner-loop control systems to provide the desired degree of stability and robustness to the closed-loop system.
+Secondly, when using a hierarchical structure, each successive loop is generating a command to the closed-loop system within it.
+This structure, with the explicit calculation of commands by outer-loop controllers, facilitates the limiting of of these commands.
+This is very valuable for many systems, including in aerospace applications where the limiting of inner-loop commands may be necessary in order to respect structural or aerodynamic limitations.
+Furthermore, a hierarchical approach is desired in that designing controllers for several lower-order systems is often preferred over designing a single controller for a higher order system.
+The hierarchical architecture is also advantageous in that the inner-loop is often used to provide system stability, with the outer-loop providing guidance commands.
+In this arrangement, it is often desirable to be able to change the outer-loop control law while maintaining the inner-loop control law.
+Lastly, control practitioners have often found the sequential loop closure approach to provide more robust control designs than single loop closure approaches in practice.
+
+One industry in particular that has leveraged this approach to control design is aerospace.
+Historically, the design of flight control systems has used sequential loop closure to synthesize feedback control laws.
+These control laws are typically designed separately for the longitudinal and lateral-directional dynamics, as these dynamics are decoupled under most flight conditions\ \cite{stevenslewis.aircraftcontrol.2003}.
+When closing each successive loop, practical experience, root locus techniques, and frequency domain techniques are used to determine how to feed back each specific measured signal, such as pitch rate or angle of attack, to a particular control surface.
+In doing this, the aircraft could be given desirable closed-loop performance and stability margins.
+Conventional control techniques such as classical sequential loop closure require precise and accurate knowledge of the aerodynamic characteristics of the aircraft, and the resulting controllers are designed with sufficient margins to accommodate any uncertainties encountered during flight.
+
+However, despite this hierarchical architecture having been motivated by applications in the control of vehicles, and aerospace vehicles in particular, the benefits of such an approach are applicable to many other applications, as described above.
+Regardless of the application, much of the control theory that has been developed has been done so by using a model of the system to be controlled.
+When there exists uncertainty in the plant model, many control techniques are not sufficient to maintain stability, set point tracking, or command regulation as desired.
+In these cases the controller may need to reconfigure itself to adapt to the true plant as necessary.
+This kind of controller is part of what is now referred to as adaptive control.
+
+\section{Need for Adaptive Control}
+
+When designing controllers for modern systems, obtaining accurate values of the system parameters can be challenging, thus making the process of designing a stabilizing controller more challenging as well.
+This has led to an increased use of adaptive techniques to solve control problems, with great success\ \cite{lavretskywise.book.2013}.
+Adaptive control research was driven in the 1950s by the need for autopilots for aircraft that operated in a wide flight envelope, across which the aircraft dynamics change significantly\ \cite{astrom.feedback.1987}.
+While many other control techniques offer their own unique advantages in certain applications, adaptive control is a particularly attractive candidate for dealing with the problems associated with the control of aircraft including, for example, hypersonic vehicles.
+
+Aircraft dynamics can be reasonably approximated by a linearization about a trim flight condition.
+The parametric uncertainties which are prevalent in aerospace applications such as control surface ineffectiveness, unknown aerodynamic coefficients, center of gravity shift, and more manifest themselves themselves in a way which is conducive to the design of an adaptive controller.
+That is, many of the uncertainties associated with hypersonic vehicles can be represented as parametric ones, entering the system through the control channels.
+An adaptive controller can contend easily with these and ensure the desired closed-loop performance is attained, when degradation of a robust baseline controller is inevitable.
+The adaptive control structure taken in this thesis is then built around this linearized design model with the parametric uncertainties.
+
+Many such adaptive controllers have previously focused only on the problem of inner-loop control\ \cite{mcfarland.autopilot.1996, qu.gnc.2013, wiese.adaptive.2013, wiese.gnc.2015, wiese.jgcd.2015, wise.munition.2005, wise.autopilot.2008}.
+This inner-loop design procedure enabled the design of a lower order controller to provide stability in the presence of uncertainties, but have not provided the ability to track meaningful flight trajectories;  that is guidance loops were typically not designed.
+The design of the guidance laws around vehicles with adaptive inner loops is typically accomplished using ad-hoc methods, with stability and performance of the closed-loop system only verified through simulation.
+
+An alternative to the multi-loop design approach described above is to use a higher order model to represent the vehicle dynamics, and design guidance and control laws simultaneously.
+The result is a more complex controller with a greater number of integrators and adaptive parameters.
+In Reference\ \cite{gibson.adaptive.2008} an adaptive controller was designed for a linear system which represents the longitudinal dynamics of a hypersonic vehicle.
+The controller used feedback from all five state variables to each of the three inputs, with additional feed forward terms, resulting in 24 adaptive parameters.
+
+Other approaches have used sequential loop closure on higher order nonlinear models.
+In Reference\ \cite{fiorentini.canard.2008} the non-minimum phase dynamics typically associated with the transfer function from an aircraft's elevator input to the altitude were overcome by the addition of a canard, which would be practically impossible to implement on a hypersonic vehicle due to the effects that aerodynamic heating would have an such a forward control surface.
+In Reference\ \cite{fiorentini.nmp.2009} a canard is no longer used, and the resulting unstable zero dynamics associated with regulating flight path angle using the elevator input are overcome using a non-adaptive dynamic inversion controller with a low gain outer loop and saturation functions.
+Reference\ \cite{bodson.autopilot.2003} uses an adaptive dynamic inversion inner-loop control law, with a parameter identification algorithm which requires the state derivative be measurable.
+The outer-loop is closed using sequential loop closure, but no stability proof is provided to ensure stability of the overall closed-loop system.
+
+The sequential loop closure based approach developed in this thesis uses an adaptive element to accommodate plant uncertainties, and leverages the benefits of using a hierarchical approach.
+While the previous paragraphs have motivated the need for adaptive control and described some existing aerospace applications and their drawbacks, the applicability and benefits of a hierarchical adaptive approach extends beyond controlling aerospace systems.
+In the following section the control problem is formulated with a general structure applicable to a wide class of systems.
+
+\section{Problem Formulation}
+
+Consider the following linear time-invariant system
+\begin{equation}
+  \label{eqn.FullLinearSystem}
+  \begin{split}
+    \dot{x}_{w}(t) &= A_{w}x_{w}(t) + B_{w}u(t) \\
+    y_{w}(t) &= C_{w}x_{w}(t) \\
+    z_{w}(t) &= C_{wz}x_{w}(t) + D_{wz}u(t) \\
+  \end{split}
+\end{equation}
+where $x_{w}\in\mathbb{R}^{n_{w}}$, $A_{w}\in\mathbb{R}^{n_{w}\times n_{w}}$, $B_{w}\in\mathbb{R}^{n_{w}\times m}$ and $u(t)\in\mathbb{R}^{m}$.
+$y_{w}(t)\in\mathbb{R}^{p_{w}\times n_{w}}$ is the \textit{measured output}, which represents a set of sensor outputs that are available for measurement, and $z_{w}(t)\in\mathbb{R}^{n_{ew}\times n_{w}}$ is the \textit{regulated output}, which represents a particular set of outputs for which command tracking is desired.
+Consider those class of systems in\ \eqref{eqn.FullLinearSystem} which can be partitioned as
+\begin{equation}
+  \label{eqn.wholeSystem}
+  \begin{split}
+    \begin{bmatrix}
+      \dot{x}_{p}(t) \\
+      \dot{x}_{g}(t)
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      A_{p} & B_{gd} \\
+      B_{gp} & A_{g}
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_{p}(t) \\
+      x_{g}(t)
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+      B_{p} \\
+      0
+    \end{bmatrix}
+    u(t) \\
+    \begin{bmatrix}
+      y_{p}(t) \\
+      y_{g}(t)
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      C_{p} & 0 \\
+      0 & C_{g}
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_{p}(t) \\
+      x_{g}(t)
+    \end{bmatrix} \\
+    \begin{bmatrix}
+      z_{p}(t) \\
+      z_{g}(t)
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      C_{pz} & 0 \\
+      0 & C_{gz}
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_{p}(t) \\
+      x_{g}(t)
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+      D_{pz} \\
+      0
+    \end{bmatrix}
+    u(t)
+  \end{split}
+\end{equation}
+where $A_{p}\in\mathbb{R}^{n_{p}\times n_{p}}$, $A_{g}\in\mathbb{R}^{n_{g}\times n_{g}}$, $B_{p}\in\mathbb{R}^{n_{p}\times m}$, $B_{gp}\in\mathbb{R}^{n_{g}\times n_{p}}$, $B_{gd}\in\mathbb{R}^{n_{p}\times n_{g}}$, $C_{p}\in\mathbb{R}^{\ell_{p} \times n_{p}}$, $C_{g}\in\mathbb{R}^{\ell_{g}\times n_{g}}$, $C_{pz}\in\mathbb{R}^{n_{ep}\times n_{p}}$, $C_{gz}\in\mathbb{R}^{n_{eg}\times n_{g}}$, and $D_{pz}\in\mathbb{R}^{n_{ep}\times m}$ are \textit{known} matrices.
+The \textit{measured outputs} are given by $y_{p}(t)$ and $y_{g}(t)$, and the \textit{regulated outputs} $z_{p}(t)$ and $z_{g}(t)$ correspond to particular outputs for which tracking of command signals $z_{p,\text{cmd}}(t)$ and $z_{g,\text{cmd}}^{\prime}(t)$, respectively, is desired.
+The number of regulated outputs cannot exceed the number of inputs, that is $n_{ep}\leq m$.
+It is very common to be able to partition systems in\ \eqref{eqn.FullLinearSystem} as described by\ \eqref{eqn.wholeSystem}.
+For example, many mechanical systems exhibit this structure, where the equations with the subscript $p$ represent the dynamics, and $g$ the kinematics.
+The input $u(t)$ to such a system thus enters through the dynamics, with the kinematics essentially being integrations of the dynamic state variables.
+The outputs are often decoupled as well, with various sensors providing feedback about the dynamics by providing velocities or accelerations, and other sensors providing kinematic information such as position or orientation.
+The partitioned structure of\ \eqref{eqn.FullLinearSystem} as\ \eqref{eqn.wholeSystem} is taken advantage of to facilitate the design of a controller in the following chapters.
+Furthermore, for systems represented as in\ \eqref{eqn.wholeSystem} the $B_{gd}$ term is often negligible, as this term represents the coupling effect of the the outer-loop kinematics on the inner-loop dynamics, which is usually small.
+
+The inner-loop dynamics in\ \eqref{eqn.wholeSystem} can be written
+\begin{equation}
+  \label{eqn.innerLoopDynamics}
+  \begin{split}
+    \dot{x}_{p}(t) &= A_{p}x_{p}(t) + B_{p}u(t) + B_{gd}x_{g}(t) \\
+    y_{p}(t) &= C_{p}x_{p}(t) \\
+    z_{p}(t) &= C_{pz}x_{p}(t) + D_{pz}u(t) \\
+  \end{split}
+\end{equation}
+and the outer-loop dynamics by
+\begin{equation}
+  \label{eqn.outerLoopDynamics}
+  \begin{split}
+    \dot{x}_{g}(t) &= A_{g}x_{g}(t) + B_{gp}x_{p}(t) \\
+    y_{g}(t) &= C_{g}x_{g}(t) \\
+    z_{g}(t) &= C_{gz}x_{g}(t) \\
+  \end{split}
+\end{equation}
+Assuming $B_{gd}=0$ allows the inner-loop dynamics in\ \eqref{eqn.innerLoopDynamics} to be simplified and given as
+\begin{equation}
+  \label{eqn.plantxp}
+  \begin{split}
+    \dot{x}_{p}(t) &= A_{p}x_{p}(t) + B_{p}u(t) \\
+    y_{p}(t) &= C_{p}x_{p}(t) \\
+    z_{p}(t) &= C_{pz}x_{p}(t) + D_{pz}u(t) \\
+  \end{split}
+\end{equation}
+The parametric uncertainties considered in this work manifest themselves in the linear system given in Equation\ \eqref{eqn.wholeSystem} as
+\begin{equation}
+  \label{eqn.wholeSystemUncertain}
+  \begin{split}
+    \begin{bmatrix}
+      \dot{x}_{p}(t) \\
+      \dot{x}_{g}(t)
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      A_{p}+B_{p}\Psi_{p}^{\top} & B_{gd} \\
+      B_{gp} & A_{g}
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_{p}(t) \\
+      x_{g}(t)
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+      B_{p}\Lambda \\
+      0
+    \end{bmatrix}
+    u(t) \\
+    \begin{bmatrix}
+      y_{p}(t) \\
+      y_{g}(t)
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      C_{p} & 0 \\
+      0 & C_{g}
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_{p}(t) \\
+      x_{g}(t)
+    \end{bmatrix} \\
+    \begin{bmatrix}
+      z_{p}(t) \\
+      z_{g}(t)
+    \end{bmatrix}
+    &=
+    \begin{bmatrix}
+      C_{pz}+D_{pz}\Psi_{p}^{\top} & 0 \\
+      0 & C_{gz}
+    \end{bmatrix}
+    \begin{bmatrix}
+      x_{p}(t) \\
+      x_{g}(t)
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+      D_{pz}\Lambda \\
+      0
+    \end{bmatrix}
+    u(t)
+  \end{split}
+\end{equation}
+where the nonsingular matrix $\Lambda\in\mathbb{R}^{m\times m}$ and $\Psi_{p}\in\mathbb{R}^{n_{p}\times m}$, which represents constant matched uncertainty weights that enter the system through the columns of $B_{p}$, are \textit{unknown}.
+These uncertainties are called ``matched'' uncertainties, as they enter the system dynamics through the control channels\ \cite{lavretskywise.book.2013}.
+The representation of uncertainty in the form of\ \eqref{eqn.wholeSystemUncertain} is common for the same reasons which allowed the system in\ \eqref{eqn.FullLinearSystem} to be expressed by the block partitioned structure in\ \eqref{eqn.wholeSystem}.
+Again using the example of a mechanical system, expressing the uncertainty in this way is possible by the fact that uncertainties are often present in the dynamics of the system, and do not affect the kinematics.
+
+Ultimately, the \textit{control goal} is to design $u$ in\ \eqref{eqn.wholeSystemUncertain} so that $z_{g}(t)$ tracks $z_{g,\text{cmd}}^{\prime}(t)$.
+There are many controllers which may be designed to satisfy the control goal.
+In this work the control design process is simplified by using a sequential-loop-closure approach with an adaptive element to accommodate uncertainties.
+This process requires a controller for the reduced order inner-loop system which contains the uncertainty to be designed first.
+The uncertainty introduced in\ \eqref{eqn.wholeSystemUncertain}, when partitioned, modifies the inner-loop dynamics in\ \eqref{eqn.innerLoopDynamics} as
+\begin{equation}
+  \label{eqn.innerLoopDynamicsUncertain}
+  \begin{split}
+    \dot{x}_{p}(t) &= A_{p}x_{p}(t) + B_{p}\bigr(\Lambda u(t) + \Psi_{p}^{\top}x_{p}(t)\bigr)+B_{gd}x_{g}(t) \\
+    y_{p}(t) &= C_{p}x_{p}(t) \\
+    z_{p}(t) &= C_{pz}x_{p}(t) + D_{pz}\bigr(\Lambda u(t) + \Psi_{p}^{\top}x_{p}(t)\bigr) \\
+  \end{split}
+\end{equation}
+Because the uncertainty does not affect the outer-loop dynamics, there is no change to\ \eqref{eqn.outerLoopDynamics}.
+The design of a controller for the system in\ \eqref{eqn.innerLoopDynamicsUncertain} is typically called the inner-loop controller.
+After the inner-loop is closed, the outer-loop dynamics in\ \eqref{eqn.outerLoopDynamics} are reintroduced and another control design is complete.
+As the inner-loop control design is completed first, and independent of the outer-loop dynamics, the effect of the outer-loop kinematics on the inner-loop dynamics is neglected by setting $B_{gd}=0$ in\ \eqref{eqn.innerLoopDynamicsUncertain} to obtain
+\begin{equation}
+  \label{eqn.xdotpunc}
+  \begin{split}
+    \dot{x}_{p}(t) &= \bigr(A_{p}+B_{p}\Psi_{p}^{\top}\bigr)x_{p}(t) + B_{p}\Lambda u(t) \\
+    y_{p}(t) &= C_{p}x_{p}(t) \\
+    z_{p}(t) &= C_{pz}x_{p}(t) + D_{pz}\bigr(\Lambda u(t) + \Psi_{p}^{\top}x_{p}(t)\bigr) \\
+  \end{split}
+\end{equation}
+The input $u(t)$ in\ \eqref{eqn.xdotpunc} is then designed so that $z_{p}(t)$ tracks $z_{p,\text{cmd}}(t)$.
+The design of this control input to satisfy the inner-loop control goal concludes the inner-loop control design.
+Next, $B_{gd}$ is reintroduced into\ \eqref{eqn.xdotpunc} giving\ \eqref{eqn.innerLoopDynamicsUncertain}, and the outer-loop dynamics in\ \eqref{eqn.outerLoopDynamics} are considered, and the goal is then to design the inner-loop command $z_{p,\text{cmd}}(t)$ such that $z_{g}(t)$ tracks $z_{g,\text{cmd}}^{\prime}(t)$.
+This completes the outer-loop design.
+
+\section{Thesis Overview}
+
+The first contribution of this thesis is the design a robust inner-loop controller for systems described by\ \eqref{eqn.xdotpunc} which is capable of accommodating the uncertainty present in the plant, only requires sensor measurements $y_{p}(t)$ and $z_{p}(t)$ which are available, and provides command tracking of the inner-loop regulated output $z_{p}(t)$.
+A robust adaptive inner-loop controller along the lines of References\ \cite{lavretskywise.book.2013, qu.jgcd.2016, wiese.adaptive.2013, wise.munition.2005, wise.autopilot.2008} is used.
+This thesis provides a new way of synthesizing the gain matrices required for such a controller, providing a larger set of solutions and extra degrees of freedom to tune the controller for increased performance and robustness.
+
+The second contribution of this thesis is the design of the outer-loop controller which generates appropriate inner-loop commands $z_{p,\text{cmd}}(t)$ so that the plant output $z_{g}(t)$ follows a desired command trajectory, as prescribed by the outer-loop command $z_{g,\text{cmd}}^{\prime}(t)$.
+The outer-loop controller incorporates a state-limiter, allowing the inner and outer-loop command signals to be modified as necessary to limit the evolution of the state trajectories to within a certain prescribed region within the state space.
+The outer-loop controller uses components of a closed-loop reference model, and the resulting closed-loop system is shown to be globally stable.
+This sequential loop closure based procedure to synthesize an outer-loop controller simplifies the process of designing guidance and control laws from that of designing a single higher-order controller to several lower-order controllers.
+Additionally, existing outer-loop controllers are designed using ad-hoc methods, selecting feedback gains sufficiently small in an attempt to ensure stability, but with no theoretical guarantees of stability.
+The proposed approach provides an outer-loop control design which does not require a re-design of the existing inner-loop, and guarantees global stability of the closed-loop system, and enforces desired state limits.
+
+The third contribution of this thesis is the demonstration of the efficacy of this method by applying the sequential loop closure based adaptive controller to a highly nonlinear, unstable, six degree-of-freedom hypersonic vehicle model, which includes unmodeled actuator dynamics.
+In order to produce a practical controller, a high level of practicality was considered and maintain throughout the development of the controllers described in the first two contributions.
+That is, significant emphasis was kept throughout the control design process on ensuring that the resulting controller was practically feasible.
+The result was a controller that is computationally simple to design and implement, provides constructive procedures to produce the necessary gains, and ensures that these gains are not numerically impractical.
+The structure of the remainder of this thesis is described as follows.
+
+Chapter~\ref{ch.innerLoop} presents the adaptive inner-loop output-feedback control design which requires the synthesis of two static gain matrices that ensure a set of underlying dynamics are made strictly positive-real.
+The proposed control architecture is compared to the existing classical multi-input-multi-output (MIMO) adaptive control designs.
+Several simple numerical examples are provided.
+
+Chapter~\ref{ch.outerLoop} presents the outer-loop control design, which is designed to work around and without requiring a re-design of the inner-loop controller in Chapter~\ref{ch.innerLoop}.
+This design involves the selection of two additional reference model components, and the synthesis of three additional feedback gain matrices which decouple the inner and outer-loop errors and guarantee global stability.
+A state-limiter is presented as applied to this combined inner and outer-loop controller which modifies the inner-loop commands as necessary so as to enforce desired limits on the various plant states.
+The numerical examples from Chapter~\ref{ch.innerLoop} are continued, each utilizing the existing inner-loop controller and demonstrating the design of the outer-loop controller.
+
+Chapter~\ref{ch.applicationHypersonic} presents a numerical example of this sequential loop closure based architecture applied to the control of a nonlinear six degree-of-freedom generic hypersonic vehicle model.
+The dynamical equations describing the hypersonic vehicle model are presented and the assumptions used in this model are stated.
+The equations of motion are linearized about a nominal flight condition, and the flight modes are analyzed.
+The uncertainties which are considered, and their representation in the linear model, are presented.
+Details about this evaluation model used for the simulations is provided.
+The proposed control architecture is shown to result in stable performance, outer-loop command tracking, while satisfying desired state constraints.
+
+Chapter~\ref{ch.conclusions} provides the conclusions of this research, and suggests possible directions for future research.

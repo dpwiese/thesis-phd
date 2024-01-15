@@ -1,0 +1,135 @@
+\documentclass[12pt,vi,twoside,leftblank]{../sty/mitthesis}
+\usepackage{
+  float,
+  amssymb,
+  amsmath,
+  fullpage,
+  indentfirst,
+  mathrsfs,
+  hyperref,
+  booktabs,
+  empheq,
+  mathtools,
+  enumerate,
+  amsthm,
+  thmtools,
+  tabularx,
+  pgfplots
+}
+\usepackage[shortlabels]{enumitem}
+\usepackage{url}
+\usepackage{setspace}
+\usepackage[english]{babel}
+
+% This is to format thing to avoid weird whitespace
+\raggedbottom%
+
+% Define path where figures are stored
+\newcommand{\figurepath}{../fig}
+
+\renewcommand{\theenumi}{\Alph{enumi}}
+
+% Theorem styles
+\declaretheoremstyle[
+  headfont=\bfseries,
+  notebraces={}{},
+  notefont=\bfseries,
+  bodyfont=\itshape,
+  headpunct={},
+  headformat={\hspace{0.0in}\makebox[0.65in][l]{\NAME\ \NUMBER\ }{\hspace{0.1in}\NOTE}}\hspace{0.2in}
+]{thm-style-1}
+
+\declaretheoremstyle[
+  headfont=\bfseries,
+  notebraces={}{},
+  notefont=\bfseries,
+  bodyfont=\itshape,
+  headpunct={},
+  headformat={\hspace{0.0in}\makebox[0.65in][l]{\NAME\ \NUMBER\ }{\hspace{0.1in}\NOTE}}\hspace{0.1in}
+]{lem-style-1}
+
+\declaretheoremstyle[
+  headfont=\bfseries,
+  notebraces={}{},
+  notefont=\bfseries,
+  bodyfont=\itshape,
+  headpunct={},headformat={\NAME\ \NUMBER\ }
+]{cor-style-1}
+
+\declaretheoremstyle[
+  headfont=\scshape,
+  notefont=\itshape,
+  bodyfont=\normalfont,
+  headpunct=\relax,
+  headformat={\makebox[0.5in][r]{\NAME\ }\NOTE},
+]{prf-style-1}
+
+\declaretheoremstyle[
+  headfont=\bfseries,
+  notebraces={}{},
+  notefont=\bfseries,
+  headpunct={},
+  headformat={\NAME\ \NOTE}
+]{ass-style-1}
+
+\declaretheoremstyle[
+  headfont=\bfseries,
+  notebraces={}{},
+  notefont=\bfseries,
+  headpunct={},
+  headformat={\NAME\ \NUMBER\ }{\hspace{-0.1in}\NOTE\hspace{0.1in}}
+]{rem-style-1}
+
+%Need to undeclare the proof environment that amsthm provides but I can't use \renewenvironment
+\let\proof\relax
+\let\endproof\relax
+
+% Use these styles in definitions of proof, theorem, etc.
+\declaretheorem[style=thm-style-1, numbered=yes, name=Theorem]{thm-dan}
+\declaretheorem[style=lem-style-1, numbered=yes, name=Lemma]{lem-dan}
+\declaretheorem[style=cor-style-1, numbered=yes, name=Corollary]{cor-dan}
+\declaretheorem[style=prf-style-1, name=Proof, qed=\qedsymbol]{proof-dan}
+\declaretheorem[style=ass-style-1, numbered=yes, name=Assumption]{ass-dan}
+\declaretheorem[style=rem-style-1, numbered=yes, name=Remark]{rem-dan}
+\declaretheorem[style=rem-style-1, numbered=yes, name=Definition]{defn-dan}
+\declaretheorem[style=rem-style-1, numbered=yes, name=Proposition]{prop-dan}
+%------------------------------------------------------------------------------------------------------------------
+%To allow bold symbols in section headings
+\makeatletter
+\g@addto@macro\bfseries{\boldmath}
+\makeatother
+%------------------------------------------------------------------------------------------------------------------
+
+\newtheoremstyle{examplestyle}% name of the style to be used
+{}% measure of space to leave above the theorem. E.g.: 3pt
+{}% measure of space to leave below the theorem. E.g.: 3pt
+{\slshape}% name of font to use in the body of the theorem
+{0pt}% measure of space to indent
+{\bfseries}% name of head font
+{\vspace{-6pt}}% punctuation between head and body eg \newline
+{0pt}% space after theorem head
+{}% Manually specify head
+
+\theoremstyle{examplestyle}
+\newtheorem{innercustomthm}{Assumption}
+\newenvironment{customthm}[1]
+{\renewcommand\theinnercustomthm{#1}\innercustomthm\normalfont}
+{\endinnercustomthm}
+
+\begin{document}
+\input{chapters/cover}
+\pagestyle{plain}
+\input{chapters/contents}
+\input{chapters/chapter-1-introduction}
+\input{chapters/chapter-2-inner-loop}
+\input{chapters/chapter-3-outer-loop}
+\input{chapters/chapter-4-application-hypersonic}
+\input{chapters/chapter-5-conclusions}
+\appendix
+\input{chapters/appendix-a-numerical-data}
+\input{chapters/appendix-b-preliminaries}
+\input{chapters/appendix-c-proofs}
+\input{chapters/bibliography}
+\end{document}
+
+%http://gmarani.org/wp/wp-content/uploads/2009/02/pseudoinverse-advenced-robotics-nakamura.pdf

@@ -1,0 +1,227 @@
+\chapter{Proofs}\label{app.proofs}
+
+\begin{lem-dan}
+  Theorem~\ref{thm.existenceOuterLoop} holds for systems where $n-p\geq n_{g}$ if the following conditions are satisfied
+  \begin{align}
+    \label{eqn.PiAtallCond1}
+    \Pi_{B}^{\top}\Pi_{A}^{-1_{\text{\rm{left}}}}\Pi_{C} &=
+    (\Pi_{B}^{\top}\Pi_{A}^{-1_{\text{\rm{left}}}}\Pi_{C})^{\top} \\
+    \label{eqn.PiAtallCond2}
+    U_{2}^{\top}\Pi_{C}^{\top}\Pi_{A}^{-\top_{\text{\rm{left}}}} &= 0 \\
+    \label{eqn.PiAtallCond3}
+    U_{1}^{\top}\Pi_{C}^{\top}\Pi_{A}^{-\top_{\text{\rm{left}}}}V_{1}\Sigma &>0
+  \end{align}
+  where $U_{1}$, $V_{1}$, and $\Sigma$ are found by performing a singular value decomposition on $\Pi_{B}^{\top}$ as described in\ \cite{hua.symmetric.1990}, and for the resulting $P_{g}$ to also satisfy\ \eqref{eqn.condition4bCaseI} as required, the following inequality must hold.
+  \begin{equation}
+    \label{eqn.PiAtallCond4}
+    \Pi_{B}^{\top}A_{g}^{\top}\Pi_{A}^{-1_{\text{\rm{left}}}}\Pi_{C} +
+    (\Pi_{B}^{\top}A_{g}^{\top}\Pi_{A}^{-1_{\text{\rm{left}}}}\Pi_{C})^{\top} <0
+  \end{equation}
+  If these conditions are satisfied, $P_{g}$ can be found as follows
+  \begin{equation*}
+    P_{g}
+    =
+    A^{-1_{\text{\rm{right}}}}B+(I-A^{-1_{\text{\rm{right}}}}A)(A^{-1_{\text{\rm{right}}}}B)^{\top}+(I-A^{-1_{\text{\rm{right}}}}A)B^{\top}(BA^{\top})B(I-A^{-1_{\text{\rm{right}}}}A)+V_{2}GV_{2}^{\top}
+  \end{equation*}
+  where $V_{2}$ is found by performing a singular value decomposition on $\Pi_{B}^{\top}$ as described in\ \cite{hua.symmetric.1990}, $G=G^{\top}>0$ is arbitrary, and $A$ and $B$ are given by the following
+  \begin{align*}
+    A &= \Pi_{B}^{\top} \\
+    B &= (\Pi_{A}^{-1_{\text{\rm{left}}}}\Pi_{C})^{\top}
+  \end{align*}
+\end{lem-dan}
+
+\begin{proof-dan}
+  In this case, symmetric solutions to the matrix equation $\Pi_{A}P_{g}\Pi_{B}=\Pi_{C}$ must be found, where now $\Pi_{A}$ is no longer wide; it will either be square or tall.
+  The matrix $\Pi_{B}$ is always tall.
+  In this case the equation can be rearranged using a left inverse to obtain
+  \begin{equation}
+    \label{eqn.appPgPiBstuff}
+    P_{g}\Pi_{B} = \Pi_{A}^{-1_{\text{\rm{left}}}}\Pi_{C}
+  \end{equation}
+  Taking the transpose of both sides of\ \eqref{eqn.appPgPiBstuff} gives
+  \begin{equation}
+    \label{eqn.appPgPiBstuff2}
+    \Pi_{B}^{\top}P_{g} = \Pi_{C}^{\top}\Pi_{A}^{-\top_{\text{\rm{left}}}}
+  \end{equation}
+  Symmetric positive definite solutions $P_{g}=P_{g}^{\top}$ to\ \eqref{eqn.appPgPiBstuff2} are given in\ \cite{hua.symmetric.1990}.
+  Satisfying the additional inequality\ \eqref{eqn.condition4b} required for Theorem~\ref{thm.existenceOuterLoop} to hold, is equivalent to the inequality\ \eqref{eqn.condition4bCaseI} using the expression for $\Pi_{B}$.
+  Substituting\ \eqref{eqn.appPgPiBstuff} into\ \eqref{eqn.condition4bCaseI} gives the inequality in\ \eqref{eqn.PiAtallCond4}.
+  Whether or not a given plant satisfies these conditions can be easily verified by substituting the expressions for $\Pi_{A}$, $\Pi_{B}$, and $\Pi_{C}$ from\ \eqref{eqn.AXBandCCaseI} into\ \eqref{eqn.PiAtallCond1},\ \eqref{eqn.PiAtallCond2},\ \eqref{eqn.PiAtallCond3}, and\ \eqref{eqn.PiAtallCond4}.
+  Thus, the conditions in this lemma can be verified given a plant to determine the existence of the outer-loop controller, and provides the solution $P_{g}$ necessary.
+\end{proof-dan}
+
+\begin{lem-dan}
+  The third conditions from\ \eqref{eqn.firstColumnOfPinv} and\ \eqref{eqn.secondColumnOfPinv}, given below, hold for matrices $\Pi_{A}$, $\Pi_{B}$, $P_{A}$, $P_{B}$, $P_{N}$ given in Chapter~\ref{ch.outerLoop}.
+  \begin{align}
+    \tag{\ref{eqn.firstColumnOfPinv}}
+    P_{N}
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{B}^{\perp}\bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{-1_{\text{\rm{right}}}}
+    &= 0 \\
+    \tag{\ref{eqn.secondColumnOfPinv}}
+    P_{N}
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{A}^{\top\perp}\bigr(P_{B}\Pi_{B}^{\top}\Pi_{A}^{\top\perp}\bigr)^{-1_{\text{\rm{right}}}}
+    &= 0
+  \end{align}
+\end{lem-dan}
+
+\begin{proof-dan}
+  Writing out the right inverse,\ \eqref{eqn.firstColumnOfPinv} and\ \eqref{eqn.secondColumnOfPinv} can be written as
+  \begin{align*}
+    P_{N}
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{B}^{\perp}
+    (P_{A}\Pi_{A}\Pi_{B}^{\perp})^{\top}
+    \bigr(
+    (P_{A}\Pi_{A}\Pi_{B}^{\perp})
+    (P_{A}\Pi_{A}\Pi_{B}^{\perp})^{\top}
+    \bigr)^{-1}
+    &= 0 \\
+    P_{N}
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{A}^{\top\perp}
+    (P_{B}\Pi_{B}^{\top}\Pi_{A}^{\top\perp})^{\top}
+    \bigr(
+    (P_{B}\Pi_{B}^{\top}\Pi_{A}^{\top\perp})
+    (P_{B}\Pi_{B}^{\top}\Pi_{A}^{\top\perp})^{\top}
+    \bigr)^{-1}
+    &= 0
+  \end{align*}
+  Which is equivalent to satisfying
+  \begin{align*}
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{B}^{\perp}
+    (P_{A}\Pi_{A}\Pi_{B}^{\perp})^{\top}
+    &= 0 \\
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{A}^{\top\perp}
+    (P_{B}\Pi_{B}^{\top}\Pi_{A}^{\top\perp})^{\top}
+    &= 0
+  \end{align*}
+  which in turn is equivalent to satisfying
+  \begin{align*}
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{B}^{\perp}\Pi_{B}^{\perp\top}\Pi_{A}^{\top}
+    &= 0 \\
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}^{\perp\top}
+    \Pi_{A}^{\top\perp}\Pi_{A}^{\top\perp\top}\Pi_{B}
+    &= 0
+  \end{align*}
+  Satisfying these two conditions is equivalent to showing
+  \begin{align}
+    \label{eqn.bunchPisA}
+    \Pi_{B}^{\perp}\Pi_{B}^{\perp\top}\Pi_{A}^{\top}
+    &=
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}K_{1} \\
+    \label{eqn.bunchPisB}
+    \Pi_{A}^{\top\perp}\Pi_{A}^{\top\perp\top}\Pi_{B}
+    &=
+    \begin{bmatrix}
+      \Pi_{A}^{\top} & \Pi_{B}
+    \end{bmatrix}K_{2}
+  \end{align}
+  where $K_{1}\in\mathbb{R}^{(n-p)+(n_{g}-p_{g})\times n-p}$ and $K_{2}\in\mathbb{R}^{(n-p)+(n_{g}-p_{g})\times n_{g}-p_{g}}$.
+  We continue the sketch of the proof for\ \eqref{eqn.bunchPisA}; the same arguments apply for showing\ \eqref{eqn.bunchPisB}.
+  The matrix $\Pi_{B}^{\perp\top}\Pi_{A}^{\top}$ are the projections of the columns of $\Pi_{A}^{\top}$ into the each of the orthogonal vectors of unit length which form the basis for the nullspace of $\Pi_{B}$.
+  Then multiplying these quantities by $\Pi_{B}^{\perp}$ gives the vectors that are exactly the columns of $\Pi_{A}^{\top}$ projected into the nullspace of $\Pi_{B}$.
+  Such a projection can be exactly represented by the right-hand-side of\ \eqref{eqn.bunchPisA}.
+  That is, these projections can be obtained by scaling the columns of $\Pi_{A}^{\top}$ and subtracting off the components that are in the $\Pi_{B}$ directions.
+\end{proof-dan}
+
+\begin{lem-dan}
+  Satisfying\ \eqref{eqn.Pbar21XD12lyapInequality} is independent of the selection of the matrices $P_{A}$ and $P_{B}$.
+\end{lem-dan}
+
+\begin{proof-dan}
+  As $P_{B}$ in\ \eqref{eqn.Pbar21XD12lyapInequality} is full rank, it does not impact the satisfaction of the inequality.
+  Thus, satisfying\eqref{eqn.Pbar21XD12lyapInequality} is equivalent to satisfying
+  \begin{equation}
+    \label{eqn.Pbar21XD12lyapInequality2}
+    \begin{split}
+      &
+      \Pi_{B}^{\top}A_{g}^{\top}\Pi_{B}^{\perp}
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{-1_{\text{\rm{right}}}}
+      P_{A}\Pi_{C}  \\
+      & \qquad
+      +
+      \bigr(
+      \Pi_{B}^{\top}A_{g}^{\top}\Pi_{B}^{\perp}
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{-1_{\text{\rm{right}}}}
+      P_{A}\Pi_{C}
+      \bigr)^{\top}
+      <0
+    \end{split}
+  \end{equation}
+  To examine how $P_{A}$ cancels the out from\ \eqref{eqn.Pbar21XD12lyapInequality2}, the inverse $\bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{-1_{\text{\rm{right}}}}$ term is examined.
+  The right inverse is given by
+  \begin{equation*}
+    \begin{split}
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{-1_{\text{\rm{right}}}}
+      &=
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{\top}
+      \bigr(
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{\top}
+      \bigr)^{-1} \\
+      &=
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr(
+      \bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr)^{-1} \\
+      &=
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr(
+      P_{A}\Pi_{A}\Pi_{B}^{\perp}
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr)^{-1} \\
+    \end{split}
+  \end{equation*}
+  Having evaluated this right inverse, we return focus to\ \eqref{eqn.Pbar21XD12lyapInequality2}, of which the following term can be written as
+  \begin{equation*}
+    \begin{split}
+      \Pi_{B}^{\top}A_{g}^{\top}\Pi_{B}^{\perp}\bigr(P_{A}\Pi_{A}\Pi_{B}^{\perp}\bigr)^{-1_{\text{\rm{right}}}}P_{A}\Pi_{C}
+      &=
+      \Pi_{B}^{\top}A_{g}^{\top}\Pi_{B}^{\perp}
+      \bigr(
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr(
+      P_{A}\Pi_{A}\Pi_{B}^{\perp}
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr)^{-1}\bigr)
+      P_{A}\Pi_{C} \\
+      &=
+      \Pi_{B}^{\top}A_{g}^{\top}\Pi_{B}^{\perp}
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}
+      \bigr(
+      P_{A}^{\top}
+      \bigr(
+      P_{A}\Pi_{A}\Pi_{B}^{\perp}
+      \Pi_{B}^{\perp\top}\Pi_{A}^{\top}P_{A}^{\top}
+      \bigr)^{-1}
+      P_{A}
+      \bigr)
+      \Pi_{C}
+    \end{split}
+  \end{equation*}
+  From this, it can be seen that satisfying the inequality\ \eqref{eqn.Pbar21XD12lyapInequality2} is independent of $P_{A}$, and hence the same holds for the inequality\ \eqref{eqn.Pbar21XD12lyapInequality}, as desired.
+\end{proof-dan}

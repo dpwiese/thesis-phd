@@ -1,0 +1,76 @@
+\chapter{Preliminaries}\label{app.preliminaries}
+
+\paragraph{Annihilators} 
+Given a matrix $B$, the matrix $B^{\perp}$ is a basis for the orthogonal complement, or annihilator of $B$.
+That is $B^{\perp}$ satisfies $B^{\perp\top}B=0$.
+In addition, in this thesis, this notation is used to indicate that this basis be selected to be orthonormal.
+
+\paragraph{Inverses}
+Given a full rank matrix $B\in\mathbb{R}^{n\times m}$, when $B$ is square, that is $n=m$, the inverse of $B$ is written $B^{-1}$ and satisfies $BB^{-1}=I$.
+When $B$ is tall, that is $n>m$, $B$ has a left inverse $B^{-1_{\text{left}}}\in\mathbb{R}^{m\times n}$ which satisfies
+\begin{equation}
+  B^{-1_{\text{left}}}B = I_{m\times m}
+\end{equation}
+where $B^{-1_{\text{left}}}$ is given by
+\begin{equation}
+  B^{-1_{\text{left}}} = (B^{\top}B)^{-1}B^{\top}
+\end{equation}
+When $B$ is wide, that is $n<m$, $B$ has a right inverse $B^{-1_{\text{right}}}\in\mathbb{R}^{m\times n}$ which satisfies
+\begin{equation}
+  BB^{-1_{\text{right}}} = I_{n\times n}
+\end{equation}
+where $B^{-1_{\text{right}}}$ is given by
+\begin{equation}
+  B^{-1_{\text{right}}} = B^{\top}(BB^{\top})^{-1}
+\end{equation}
+
+The following well-known lemma gives necessary and sufficient conditions to ensure that the system $(A,B,C,0)$ is strictly positive real (SPR).
+
+\begin{lem-dan}[(Kalman-Yakubovic)]\label{lem.KY}
+  Given the strictly proper transfer matrix $G(s)$ with stabilizable and detectable realization $(A,B,C,0)$, where $A\in\mathbb{R}^{n\times n}$ is asymptotically stable, $B\in\mathbb{R}^{n\times m}$ and $C\in\mathbb{R}^{m\times n}$, then $G(s)$ is SPR if and only if there exists a $P=P^{\top}>0$ such that
+  \begin{align}
+    \label{eqn.lyapal2}
+    A^{\top}P+PA&<0 \\
+    \label{eqn.pbc}
+    PB&=C^{\top}
+  \end{align} 
+\end{lem-dan}
+
+\begin{proof-dan}
+  The proof can be found in Reference\ \cite{narendra.frequency.1973}.
+\end{proof-dan}
+
+\begin{cor-dan}
+  There exists a matrix $P=P^{\top}>0$ that satisfies\ \eqref{eqn.pbc} if and only if 
+  \begin{equation}
+    \label{eqn.cbeqcbt}
+    CB=(CB)^{\top}>0
+  \end{equation}
+  Furthermore, when\ \eqref{eqn.cbeqcbt} holds, all solutions of\ \eqref{eqn.pbc} are given by
+  \begin{equation}
+    \label{eqn.Psolutions}
+    P=C^{\top}(CB)^{-\top}C+B^{\perp}XB^{\perp\top}
+  \end{equation}
+  where $X=X^{\top}>0$ is arbitrary and $B^{\perp}\in\mathbb{R}^{n\times(n-m)}$.
+\end{cor-dan}
+
+\begin{proof-dan}
+  The proof can be found in Reference\ \cite{huang.designspr.1999}.
+\end{proof-dan}
+
+\begin{lem-dan}[(Matrix Elimination)]\label{lem.elimination}
+  Given 
+  \begin{equation}
+    \label{eqn:ineqprove}
+    G+C^{\top}L^{\top}P+PLC<0
+  \end{equation}
+  where $G\in\mathbb{R}^{n\times n}$, $C\in\mathbb{R}^{p\times n}$, and $P=P^{\top}\in\mathbb{R}^{n\times n}$ is full rank, an $L\in\mathbb{R}^{n\times p}$ exists which satisfies\ \eqref{eqn:ineqprove} if and only if the following inequality holds
+  \begin{equation*}
+    C^{\top\perp\top}GC^{\top\perp}<0
+  \end{equation*}
+  where $C^{\top\perp}\in\mathbb{R}^{n\times(n-p)}$ satisfies $CC^{\top\perp}=0$.
+\end{lem-dan}
+
+\begin{proof-dan}
+  The proof can be found in Reference\ \cite{boyd.lmibook.1994}.
+\end{proof-dan}
